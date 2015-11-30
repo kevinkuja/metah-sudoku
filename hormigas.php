@@ -10,6 +10,9 @@ $feromonas = New Feromonas();
 for($i= 1;$i<100;$i++){
     $sudoku = new Sudoku($random);
     $hormiga = new Hormiga($sudoku,$feromonas,40);
+    if($i % 10 == 0){
+        $feromonas->evaporar();
+    }
     if($hormiga->resolver()){
         break;
     }

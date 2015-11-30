@@ -30,4 +30,19 @@ class Feromonas{
         return $resultado;
         
     }
+    
+    public function evaporar(){
+        for ($fila = 0; $fila < 9; $fila++)
+            for ($columna = 0; $columna < 9; $columna++)
+                $nuevasFeromonas = array();
+                foreach($this->_tablero[$fila][$columna] as $valor=>$feromona){
+
+                        if($feromona > 0){
+                            $feromona--;
+                        }
+                        $nuevasFeromonas[$valor] = $feromona;
+
+                }
+                $this->_tablero[$fila][$columna] = $nuevasFeromonas;
+    }
 }
