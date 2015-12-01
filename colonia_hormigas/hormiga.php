@@ -57,14 +57,14 @@ class Hormiga{
                 }
             }
         }
-        $this->_sudoku->imprimir();
+        //$this->_sudoku->imprimir();
         return true;
     }
     
     public function resolver_por_posibles_recalculando(){
         $posiblesSudoku = $this->_sudoku->todos_los_posibles_valores();
         while(count($posiblesSudoku)>0){          
-            $max = max(count($posiblesSudoku),5);
+            $max = max(count($posiblesSudoku),2);
             for($i= 0;$i < $max;$i++){
                 $posibleCelda = $posiblesSudoku[$i];
                 $fila = $posibleCelda->fila;
