@@ -7,9 +7,9 @@ $random = inicioRandom(30);
 
 $feromonas = New Feromonas();
 
-for($i= 1;$i<100;$i++){
+for($i= 1;$i<1000;$i++){
     $sudoku = new Sudoku($random);
-    $hormiga = new Hormiga($sudoku,$feromonas,40);
+    $hormiga = new Hormiga($sudoku,$feromonas,30);
     if($i % 10 == 0){
         $feromonas->evaporar();
     }
