@@ -74,6 +74,21 @@ class Sudoku{
         }
     }
     
+    public function todos_los_posibles_valores(){
+        
+        $todosLosPosibles = new arreglo_posibles_valores();
+        for ($fila = 0; $fila < 9; $fila++){
+            for ($columna = 0; $columna < 9; $columna++){
+                $posibles = $this->posibles_valores($fila,$columna);
+                if(count($posibles) > 0){
+                    
+                    $todosLosPosibles->agregar($fila,$columna,$posibles);
+                }
+            }
+        }
+        return $todosLosPosibles->obtener_ordenados();
+    }
+    
     public function insertar_valor($fila,$columna,$valor){
         $this->_tablero[$fila][$columna]->valor = $valor;
         $ini = construirInicio($valor,$fila,$columna);        
@@ -112,4 +127,33 @@ Class Celda{
 		else
 			$this->posibles = array();
 	}
+}
+
+Class arreglo_posibles_valores{
+    
+    protected $_arreglo;
+    public function __construct(){
+        $this->_arreglo = array_fill(1, 9, array());
+    }
+    
+    public function agregar($fila,$columna,$posibles){
+        $oPosbiles = new stdClass();
+        $oPosbiles->fila = $fila;
+        $oPosbiles->columna = $columna;
+        $oPosbiles->posibles = $posibles;
+        $this->_arreglo[count($posibles)][] = $oPosbiles;
+    }
+    
+    public function obtener_ordenados(){
+        ksort($this->_arreglo);
+        $resultado = array();
+        foreach($this->_arreglo as $aPosibles){
+            foreach($aPosibles as $oPosible){
+                $resultado[] = $oPosible;
+            }
+        }
+        return $resultado;
+    }
+    
+    
 }

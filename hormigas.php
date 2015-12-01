@@ -1,21 +1,16 @@
 <?php
+ini_set('max_execution_time', 300);
 require_once 'inicios.php';
-require_once 'colonia_hormigas/sudoku.php';
-require_once 'colonia_hormigas/hormiga.php';
-require_once 'colonia_hormigas/feromonas.php';
-$random = inicioRandom(30);
+require_once 'colonia_hormigas/colonia.php';
 
-$feromonas = New Feromonas();
-
-for($i= 1;$i<1000;$i++){
-    $sudoku = new Sudoku($random);
-    $hormiga = new Hormiga($sudoku,$feromonas,30);
-    if($i % 10 == 0){
-        $feromonas->evaporar();
-    }
-    if($hormiga->resolver()){
-        break;
-    }
-   
+$cont1= $cont2= 0;
+$colonia = new Colonia_hormigas();
+for($a=0;$a<30;$a++){
     
+    $random = inicioCruzado();
+    if($colonia->resolver($random)){
+        $cont1++;
+    }
 }
+
+echo 'Sin recalcular: '.$cont1;
