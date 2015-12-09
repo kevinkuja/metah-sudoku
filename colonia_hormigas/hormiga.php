@@ -14,7 +14,8 @@ class Hormiga{
     public function resolver() {
         $filas = $this->uniqueRandomNumbersWithinRange(0, 8, 9);
         foreach ($filas as $fila) {
-            for ($columna = 0; $columna < 9; $columna++) {
+            $columnas = $this->uniqueRandomNumbersWithinRange(0, 8, 9);
+            foreach ($columnas as $columna) {
                 if(!$this->_sudoku->hayValor($fila, $columna)){
                     $seMovio = $this->seguir_feromona($fila, $columna);
                     

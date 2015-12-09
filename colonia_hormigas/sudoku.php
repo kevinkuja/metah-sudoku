@@ -74,7 +74,7 @@ class Sudoku{
         }
     }
     
-    public function todos_los_posibles_valores(){
+    public function todos_los_posibles_valores($ordenados=true){
         
         $todosLosPosibles = new arreglo_posibles_valores();
         for ($fila = 0; $fila < 9; $fila++){
@@ -86,7 +86,11 @@ class Sudoku{
                 }
             }
         }
-        return $todosLosPosibles->obtener_ordenados();
+        if($ordenados){
+            return $todosLosPosibles->obtener_ordenados();
+        }else{
+            return $todosLosPosibles->obtener();
+        }
     }
     
     public function insertar_valor($fila,$columna,$valor){
@@ -95,7 +99,99 @@ class Sudoku{
         $this->actualizar_posibles($ini);
     }
     
+    public function xyWing(){
+        $todosLosPosibles = $this->todos_los_posibles_valores(false);
+       
+        $dosPosibles = $todosLosPosibles[2];
+        foreach($dosPosibles as $dosPosible){
+            
+            $parConjugadoX = $this->parConjugado($dosPosible, array_values($dosPosible->posibles)[0],null, $todosLosPosibles);
+            if($parConjugadoX != null){
+                $parConjugadoY = $this->parConjugado($dosPosible, array_values($dosPosible->posibles)[1],array_values($dosPosible->posibles)[1], $todosLosPosibles);
+                if($parConjugadoY != null){
+                    $this->eliminarOpcionXYWing($dosPosible,$parConjugadoX,$parConjugadoY, array_values($dosPosible->posibles)[1]);
+                }
+            }
+        }
+    }
     
+    public function parConjugado($celda, $valor,$valor2, $todosLosPosibles){
+        foreach($todosLosPosibles as $cantidad => $posiblesPorCantidad){
+            if($cantidad > 1){
+                foreach($posiblesPorCantidad as $posibles){
+                    if($posibles != $celda){
+                        if(in_array($valor, $posibles->posibles)){
+                            if($valor2 == null){
+                                return $posibles;
+                            }else{
+                                if(in_array($valor2, $posibles->posibles)){
+                                    return $posibles;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public function eliminarOpcionXYWing($dosPosible,$parConjugadoX,$parConjugadoY, $valorzZ){
+        $compartenGrupo = $this->obtenerCeldasDeGrupoDeconflicto($parConjugadoX,$parConjugadoY);
+        
+        foreach($compartenGrupo as $celda){
+            if($celda != $dosPosible){
+                $this->borrarElemento($celda, $valorzZ);
+            }
+        }
+    }
+    
+    public function obtenerCeldasDeGrupoDeconflicto($parConjugadoX,$parConjugadoY){
+        $celdas = new arreglo_posibles_valores();
+        if($parConjugadoX->fila == $parConjugadoY->fila){
+            for($i = 0; $i < 9; $i++){
+                if($i != $parConjugadoY->columna && $parConjugadoX->columna != $i){
+                    $celdas->agregar($parConjugadoX->fila,$i,$this->_tablero[$parConjugadoX->fila][$i]->posibles);
+                }
+            }
+        }
+        if($parConjugadoX->columna == $parConjugadoY->columna){
+            for($i = 0; $i < 9; $i++){
+                if($i != $parConjugadoY->fila && $parConjugadoX->fila != $i){
+                    $celdas->agregar($parConjugadoX->columna,$i,$this->_tablero[$parConjugadoX->fila][$i]->posibles);
+                }
+            }
+        }
+        
+        if($parConjugadoX->fila <3 && $parConjugadoY->fila< 3 && $parConjugadoX->columna <3 && $parConjugadoY->columna< 3){
+            for($i = 0;$i<3;$i++){
+                for($a = 0;$a<3;$a++){
+                    if( ($i != $parConjugadoX->fila || $a != $parConjugadoX->columna) && ($i != $parConjugadoY->fila || $a != $parConjugadoY->columna)){
+                        $celdas->agregar($parConjugadoX->columna,$i,$this->_tablero[$parConjugadoX->fila][$i]->posibles);
+                    }
+                }
+            }
+        }    
+        
+        $celdas = $this->obtenerCeldasConflictoEnCuadrante($parConjugadoX,$parConjugadoY, $celdas, 3);
+        $celdas = $this->obtenerCeldasConflictoEnCuadrante($parConjugadoX,$parConjugadoY, $celdas, 6);
+        $celdas = $this->obtenerCeldasConflictoEnCuadrante($parConjugadoX,$parConjugadoY, $celdas, 9);
+        return $celdas;
+    }
+    
+    protected function obtenerCeldasConflictoEnCuadrante($parConjugadoX,$parConjugadoY, $celdas, $cuadrante){
+        if($parConjugadoX->fila <$cuadrante && $parConjugadoY->fila< $cuadrante && $parConjugadoX->columna <$cuadrante && $parConjugadoY->columna< $cuadrante){
+            if($parConjugadoX->fila > ($cuadrante - 3) && $parConjugadoY->fila > ($cuadrante - 3) && $parConjugadoX->columna > ($cuadrante - 3) && $parConjugadoY->columna > ($cuadrante - 3)){
+                for($i = ($cuadrante - 3);$i<$cuadrante;$i++){
+                    for($a = ($cuadrante - 3);$a<$cuadrante;$a++){
+                        if( ($i != $parConjugadoX->fila || $a != $parConjugadoX->columna) && ($i != $parConjugadoY->fila || $a != $parConjugadoY->columna)){
+                            $celdas->agregar($parConjugadoX->columna,$i,$this->_tablero[$parConjugadoX->fila][$i]->posibles);
+                        }
+                    }
+                }
+            }
+        }
+        return $celdas;
+    }
     
     public function imprimir(){
 	echo "<table border=1>";
@@ -153,6 +249,10 @@ Class arreglo_posibles_valores{
             }
         }
         return $resultado;
+    }
+    
+    public function obtener(){
+        return $this->_arreglo;
     }
     
     

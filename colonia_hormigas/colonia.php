@@ -7,13 +7,16 @@ Class Colonia_hormigas{
     public function resolver($inicio){
         $feromonas = New Feromonas();
        
-        for($i= 1;$i<250;$i++){
+        for($i= 1;$i<400;$i++){
             $sudoku = new Sudoku($inicio);
+            
             $hormiga = new Hormiga($sudoku,$feromonas,2);
-            if($i % 6 == 0){
-                $feromonas->evaporar();
-                
+            
+            if($i % 6 == 0){                
+                $feromonas->evaporar();    
+               $sudoku->xyWing();
             }
+            
             if($hormiga->resolver_por_posibles()){
                 echo 'Hormiga: '.$i.'<br>';
                 return true;
