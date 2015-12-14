@@ -1,0 +1,39 @@
+\section{Introducción}
+Sudoku es un juego de lógica cuyo objetivo es rellenar una cuadricula de tamaño 9x9, divididas a su vez en 9 cajas de 3x3, estas últimas llamadas cajas. Inicialmente contiene cierta cantidad de celdas con valores fijos pre-definidos y válidos, es decir, sus valores están entre [1,9], no hay repetidos por filas, columnas o cajas. \\Las reglas del juego son:
+\begin{enumerate}
+  \item Cada fila debe contener todos los números en el intervalo [1,9]
+  \item Cada columna debe contener todos los números en el intervalo [1,9]
+  \item Cada caja debe contener todos los números en el intervalo [1,9]
+\end{enumerate}
+
+El objetivo del juego es rellenar las celdas en blanco de la cuadricula inicial respetando las reglas del juego. A pesar de las simpleza del objetivo y las reglas del juego, hay 6670903752021072936960 formas posibles de ser rellenada una cuadricula. Buscar una solución intentando todas las formas posibles es claramente imposible, y eso incentiva la utilización de una metaheurística para solucionar el juego.\\
+En el presente trabajo, presentaremos una posible formulación matemática del Sudoku como un problema de optimización e dos propuestas de implementación utilizando dos metaheurísticas: Simulated annealing y Colonia de hormigas
+
+\section{Descripción y formulación matemática}
+
+
+Nuestra formulación matemática es una adaptación de (2). En esa formulación, las variables $X_{ijk} $ son variables de decisión, definidas de la siguiente manera:
+\[
+X_{ijk}= \left\{ \begin{array}{lcc}
+             1 &   $si el elemento (i,j) de la cuadricula contiene  el valor k$\\
+             \\ 0 &  $en caso contrario$
+             \end{array}
+   \right.
+   \]
+
+   
+  La formulación como programación lineal entera es la siguiente:	
+\begin{equation*}
+\begin{array}{ll@{}ll}
+\text{min}  & \displaystyle 0 &\\
+\text{sujeto a} & \displaystyle\sum\limits_{i=1}^{9} X_{ijk}=1, j=1:9,k=1:9 & (1)\\
+		& \displaystyle\sum\limits_{j=1}^{9} X_{ijk}=1,i=1:9,k=1:9 & (2)\\
+		& \displaystyle\sum\limits_{j=3q-2}^{3q} \sum\limits_{i=3p-2}^{3p} X_{ijk}=1, k=1:9,p=1:3,q=1:3 & (3) \\
+                 & \displaystyle\sum\limits_{k=1}^{9} X_{ijk}=1, i=1:9,j=1:9 & (4)\\
+                 & X_{ijk}=1 \forall (i,j,k) \in INICIALES &(5) \\
+                 &  X_{ijk} \in {0,1}
+\end{array}
+\end{equation*}
+
+ 
+ Hay que notar que como se trata de un problema de satisfacibilidad, la formulación no necesita de una función objetivo, por eso la definimos como 0. Las restricciones (1),(2) y (3) garantizan que cada numero en el intervalo posible de la instancia solo aparezca una vez en cada columna, fila, y caja, respectivamente. La restricción (4) garantiza que todas las posiciones de la martiz esten rellenas. La restricción (5) fuerza que las variables fijas de la instancia permanezcas sin alterar.
