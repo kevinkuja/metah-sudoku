@@ -9,7 +9,8 @@ $colonia = new Colonia_hormigas();
 
 for($a=0;$a<30;$a++){
     
-    $random = inicioDiagonalcita2();
+    $random = inicio4A();
+    //echo '<pre>';print_r($random);echo '</pre>';exit;
     if($colonia->resolver($random)){
         $cont1++;
     }

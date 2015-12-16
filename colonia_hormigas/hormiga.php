@@ -4,6 +4,7 @@ class Hormiga{
     protected $_sudoku;
     protected $_feromonas;
     protected $_proba;
+    protected $_ultima_feromona = array();
     
     public function __construct($sudoku,&$feromonas, $proba){
         $this->_sudoku = clone $sudoku;
@@ -43,7 +44,7 @@ class Hormiga{
         foreach($posiblesSudoku as $posibleCelda){
             $fila = $posibleCelda->fila;
             $columna = $posibleCelda->columna;
-           
+            
             if(!$this->_sudoku->hayValor($fila, $columna)){
                 $seMovio = $this->seguir_feromona($fila, $columna);
 
@@ -52,15 +53,17 @@ class Hormiga{
                     $seMovio = $this->estrategia($fila, $columna);                        
                 }
                 if (!$seMovio) {  
-//                     $this->_sudoku->imprimir();
-//                     echo'<br>';
+                    $this->_feromonas->borrar_feromona($this->_ultima_feromona);
+
                     return false;
                 }
+                
             }
         }
         //$this->_sudoku->imprimir();
         return true;
     }
+    
     
     public function resolver_por_posibles_recalculando(){
         $posiblesSudoku = $this->_sudoku->todos_los_posibles_valores();
@@ -125,6 +128,7 @@ class Hormiga{
 
     protected function moverse($fila,$columna,$valor){
        $this->_feromonas->depositar_feromona($fila,$columna,$valor);
+       $this->_ultima_feromona = array('fila'=>$fila, 'columna' => $columna, 'valor'=>$valor);
        $this->_sudoku->insertar_valor($fila,$columna,$valor);
     }
     
