@@ -63,3 +63,88 @@ El costo (o penalización) va a depender de la cantidad de celdas "ilegales" que
 Partiendo de una posible solución parcial, se procede a generar una solución vecina diferente pero a su vez cercana. Para ello realizamos entre 1 y 9 cambios de celdas, elegidas de manera aleatoria, siempre intercambiando entre la misma caja para seguir asegurando la formulación (3), siempre y cuando las celdas no sean las iniciales o las correctas. Estos "pequeños" cambios, son parte de la búsqueda local, y como se verá más adelante, puede no ser descartada como camino a seguir.
 
 \paragraph{Algoritmo}
+\begin{algorithm}
+\caption{Sudoku con Simulated annealing}\label{SimulatedAnnealing}
+\begin{algorithmic}[1]
+\Function{SASudokuSolver}{Inicio, $\alpha$, MaxIter, $Temp_{0}$ }
+
+\State $sol_{0}$ $\gets$ generarSolucionInicial(inicio)
+\State $solucionActual$  $\gets$ $mejorSudoku$   $\gets$ $sol_{0}$ 
+\State $costoActual$ $\gets$ $mejorCosto$ $\gets$ costo(mejorSudoku)
+\State \textbf{Mientras} no exceda las iteraciones m\'aximas y no haya encontrado una soluci\'on 
+
+\State \indent  $nuevaSol$ $\gets$ busquedaLocal($solucionActual$)
+\Comment{Se busca soluci\'on vecina}
+\State \indent  $nuevoCosto$ $\gets$ costo($nuevaSol$)
+\Comment {Se calcula el nuevo costo}
+\State \indent  $aceptacion$ $\gets$ Rand(0,1) $<$ exp(($costoActual$ - $nuevoCosto$)/$temp$)
+\Comment{Se calcula la aceptaci\'on, con un valor aleatorio entre (0,1)}
+\State \indent\textbf{Si} se acepta como la soluci\'on actual y no fue usada antes
+\State \indent\indent $solucionActual$ $\gets$ $nuevaSol$
+\State \indent\indent $costoActual$ $\gets$ $nuevoCosto$
+\State \indent\indent Marcar la soluci\'on como ya usada
+\State \indent\textbf{Fin Si}
+\State \indent\textbf{Si} el costo de la actual es menor que la mejor soluci\'on
+\State \indent\indent $mejorSudoku$ $\gets$ $solucionActual$
+\State \indent\indent $mejorCosto$ $\gets$ $costoActual$
+\State \indent\indent $temp$ $\gets$ $Temp_{0}$
+\Comment Reiniciamos la temperatura
+\State \indent\textbf{Fin Si}
+\State \indent\textbf{Si} el costo de la nueva soluci\'on vecina es 0
+\State \indent\indent Devolver $nuevaSol$
+\Comment Devolvemos esa soluci\'on del Sudoku
+\State \indent\indent Finalizamos la funci\'on
+\State \indent\textbf{Fin Si}
+\State \indent $temp$ $\gets$ M\'aximo entre 0.1 y $\alpha$ * $temp$
+\Comment Le aseguramos un piso mínimo a la temperatura
+\State \textbf{Fin Mientras}
+\State Devolver $mejorSudoku$
+\Comment Devolvemos la mejor soluci\'on del Sudoku que hayamos encontrado
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{B\'usqueda local}\label{BusquedaLocal}
+\begin{algorithmic}[1]
+\Function{BusquedaLocal}{Solucion}
+\State \textbf{Repetir} entre 1 y 9 veces
+\State\indent $celdaAleatoria$ $\gets$ $seleccionarCeldaAleatoria(Solucion)$
+\Comment Seleccionar una celda aleatoria
+\State\indent $otraCelda$ $\gets$ $seleccionarOtraCeldaAleatoria(celdaAleatoria)$
+\Comment Seleccionar otra celda aleatoria del mismo cuadrante
+\State\indent \textbf{Si} ninguna de las dos celdas seleccionadas est\'a protegida
+\State\indent\indent $Swap(Solucion, celdaAleatoria, otraCelda)$ 
+\Comment Intercambiar celdas
+\State\indent \textbf{Fin Si}
+\State \textbf{Fin del ciclo}
+\State Devolver soluci\'on vecina
+
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Generar soluci\'on inicial}\label{GenerarSolucionInicial}
+\begin{algorithmic}[1]
+\Function{GenerarSolucionInicial}{SudokuInicial}
+\State \textbf{Mientras haya cambios}
+\State\indent \textbf{Por} cada celda del suduoku
+\State\indent\indent Recorrer toda su fila y toda su columna recolectando los valores
+\State\indent\indent Intersectar la recolecci\'on con los valores del 1 al 9
+\Comment Para calcular los posibles valores de la fila
+\State\indent\indent \textbf{Si s\'olo queda un posible valor}
+\State\indent\indent \indent Asignarselo a la celda
+\State\indent\indent \indent Proteger la celda
+\State\indent\indent \indent Marcar que hubo cambio
+\State\indent\indent \textbf{Fin Si}
+\State\indent \textbf{Fin del ciclo} 
+\State \textbf{Fin Mientras}
+\State \textbf{Por} cada celda vacia
+\State\indent Seleccionar uno de los posibles valores que puede tener la celda 
+\State\indent En caso de que no tenga, elegir un valor aleatoria que falte en la misma caja que se encuentra la celda
+\State \textbf{Fin del ciclo}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
