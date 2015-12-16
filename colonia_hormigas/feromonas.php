@@ -22,6 +22,13 @@ class Feromonas{
 //        print_r($this->_tablero[$fila][$columna]);echo'</pre>';
     }
     
+    
+    public function borrar_feromona($feromona){
+        $this->_tablero[$feromona['fila']][$feromona['columna']][$feromona['valor']]--;
+//        echo'<pre>'.$fila.' - '.$columna;
+//        
+//        print_r($this->_tablero[$fila][$columna]);echo'</pre>';
+    }
     public function obtener_feromonas($fila,$columna){
         $resultado = $this->_tablero[$fila][$columna];
        

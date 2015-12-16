@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', 300);
 define ("INICIAL", 1);
 define ("CORRECTA", 2);
 define ("INSEGURA", 3);
@@ -8,7 +9,7 @@ define ("RANDOM", 5);
 require_once('inicios.php');
 
 
-resolverSudoku(inicioRandom(30), 0.99, 0.5, 500000, 	1);
+resolverSudoku(inicio4A(30), 0.99, 0.5, 500000, 	1);
 
 
 function resolverSudoku($inicio, $alfa, $gamma, $maxIter, $tempInicial){

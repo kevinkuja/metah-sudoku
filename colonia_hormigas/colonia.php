@@ -13,8 +13,8 @@ Class Colonia_hormigas{
             $hormiga = new Hormiga($sudoku,$feromonas,2);
             
             if($i % 6 == 0){                
-                $feromonas->evaporar();    
-               $sudoku->xyWing();
+               $feromonas->evaporar();    
+               
             }
             
             if($hormiga->resolver_por_posibles()){

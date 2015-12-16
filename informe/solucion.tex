@@ -61,7 +61,9 @@ El costo (o penalización) va a depender de la cantidad de celdas "ilegales" que
 \includegraphics[scale=0.6]{imgs/costo.png}	
 \paragraph{Solución vecina}
 Partiendo de una posible solución parcial, se procede a generar una solución vecina diferente pero a su vez cercana. Para ello realizamos entre 1 y 9 cambios de celdas, elegidas de manera aleatoria, siempre intercambiando entre la misma caja para seguir asegurando la formulación (3), siempre y cuando las celdas no sean las iniciales o las correctas. Estos "pequeños" cambios, son parte de la búsqueda local, y como se verá más adelante, puede no ser descartada como camino a seguir.
-
+\paragraph{Párametros de control}
+El algoritmo consta de 2 párametros de control, uno es $temp$ que representa la temperatura inicial y $\alpha$ que representa el factor de enfriamiento de la temperatura. En base a sucesivas pruebas determinados que los valores para los cuales obtuvimos mejores resultados son con $temp$ entre 0.9 y 1, y $\alpha$ entre 0.9 y 0.99, lo que significa un enfriamiento bastante lento.
+Además se cuenta con un párametro para marcar la cantidad de iteraciones máximas, en este punto no llegamos a un valor ideal, pero notamos que después de 100 mil iteraciones, el resultado dificilmente sigue mejorando.
 \paragraph{Algoritmo}
 \begin{algorithm}
 \caption{Sudoku con Simulated annealing}\label{SimulatedAnnealing}
