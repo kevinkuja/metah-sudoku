@@ -1,5 +1,5 @@
 <?php
-ini_set('max_execution_time', 300);
+ini_set('max_execution_time', 30000);
 define ("INICIAL", 1);
 define ("CORRECTA", 2);
 define ("INSEGURA", 3);
@@ -8,8 +8,33 @@ define ("RANDOM", 5);
 
 require_once('inicios.php');
 
+for($i = 1; $i <= 81 && false; $i++){
+	$inicio = microtime(1);
+	$res = resolverSudoku(inicioRandom($i,123), 0.99, 0.5, 50000, 	1);
+	$fin = microtime(1);
+	echo  $i.", ".($fin-$inicio).", ".($res ? "SI" : "NO");
+	echo "<br>";
+	ob_flush();
+}
+$funciones = ['inicio1', 'inicio2', 'inicio3', 'inicioDiagonal', 'inicioDiagonalcita', 'inicioDiagonalcita2',
+				'inicioCruzado','inicio1A', 'inicio4A', 'inicioEasyA', 'inicioEasyB', 'inicioEasyC', 'inicioEasyE', 'inicioEasyE'
+				];
 
-resolverSudoku(inicio4A(30), 0.99, 0.5, 500000, 	1);
+for($i = 1; $i <= 10 ; $i++){
+	foreach ($funciones as $fun) {
+		$sis = 0;
+	
+	$inicio = microtime(1);
+	$res = resolverSudoku(call_user_func($fun)	 ,$i/10, 0.5, 500000, 	1);
+	$fin = microtime(1);
+	if ($res) $sis++;
+	}
+	echo  ($i/10).", ".$sis;
+	echo "<br>";
+	ob_flush();
+}
+
+
 
 
 function resolverSudoku($inicio, $alfa, $gamma, $maxIter, $tempInicial){
@@ -21,8 +46,8 @@ function resolverSudoku($inicio, $alfa, $gamma, $maxIter, $tempInicial){
 	$costoActual = $mejorCosto = costo($mejorSudoku);
 	$it = 0;
 	$temp = $tempInicial;
-	echo "<br>COSTO:".$costoActual;
-	imprimir($sol, $proteccion);
+	//echo "<br>COSTO:".$costoActual;
+	//imprimir($sol, $proteccion);
 	flush();
 	$yaUsadas = array();
 	while($it < $maxIter && $mejorCosto != 0){
@@ -30,10 +55,10 @@ function resolverSudoku($inicio, $alfa, $gamma, $maxIter, $tempInicial){
 		$nuevoCosto = costo($nuevaSol);
 		$e = exp(($costoActual- $nuevoCosto)/$temp);
 		$rand = mt_rand() / mt_getrandmax();
-		if ($it  % 100000 == 0){
+		/*if ($it  % 100000 == 0){
 			echo "IT: $it MEJOR: $mejorCosto ACTUAL: $costoActual NUEVO: $nuevoCosto",'<br>';
 			echo "E: $e = exp($costoActual - $nuevoCosto / $temp) - RAND: $rand<br>";
-		}
+		}*/
 		if($rand < $e && !isset($yaUsadas[md5(serialize($nuevaSol))])){
 			$sol = $nuevaSol;
 			$costoActual = $nuevoCosto;
@@ -54,12 +79,12 @@ function resolverSudoku($inicio, $alfa, $gamma, $maxIter, $tempInicial){
 
 
 	}
-	echo '<br><br><hr><br>';
-	echo "ITERACIONES TOTALES: $it",'<br>';
-	echo "COSTO:".costo($mejorSudoku);
-	imprimir($mejorSudoku, $proteccion);
+	//echo '<br><br><hr><br>';
+	//echo "ITERACIONES TOTALES: $it",'<br>';
+	//echo "COSTO:".costo($mejorSudoku);
+	//imprimir($mejorSudoku, $proteccion);
  	//print_r($yaUsadas);
-
+	return costo($mejorSudoku) == 0;
 	
 }
 

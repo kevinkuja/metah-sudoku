@@ -474,7 +474,7 @@ function construirInicio($valor, $fila, $columna){
 	return $res;
 }
 
-function inicioRandom($valoresRandom){
+function inicioRandom($valoresRandom, $seed = null){
 	$iniciales = array();
 array_push($iniciales, construirInicio(9,0,0));
 array_push($iniciales, construirInicio(6,0,1));
@@ -567,6 +567,8 @@ array_push($iniciales, construirInicio(7,8,7));
 array_push($iniciales, construirInicio(3,8,8));
 $random = array();
 $celdas = range(0,80);
+if($seed !== null)
+    mt_srand($seed);
 shuffle($celdas);
 for($i = 0; $i < $valoresRandom; $i++){
 	array_push($random, $iniciales[$celdas[$i]]);
@@ -574,5 +576,186 @@ for($i = 0; $i < $valoresRandom; $i++){
 return $random;
 }
 
+function inicioEasyD(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(1,0,2));
+    array_push($iniciales, construirInicio(5,0,4));
+    array_push($iniciales, construirInicio(7,0,8));
+    array_push($iniciales, construirInicio(4,1,0));
+    array_push($iniciales, construirInicio(2,1,1));
+    array_push($iniciales, construirInicio(3,1,5));
+    array_push($iniciales, construirInicio(8,1,6));
+    array_push($iniciales, construirInicio(6,1,8));
+    array_push($iniciales, construirInicio(8,2,2));
+    array_push($iniciales, construirInicio(1,2,7));
+    array_push($iniciales, construirInicio(9,2,8));
+    array_push($iniciales, construirInicio(2,3,5));
+    array_push($iniciales, construirInicio(8,4,0));
+    array_push($iniciales, construirInicio(1,4,1));
+    array_push($iniciales, construirInicio(5,4,2));
+    array_push($iniciales, construirInicio(7,4,3));
+    array_push($iniciales, construirInicio(4,4,4));
+    array_push($iniciales, construirInicio(6,4,5));
+    array_push($iniciales, construirInicio(9,4,6));
+    array_push($iniciales, construirInicio(3,4,7));
+    array_push($iniciales, construirInicio(2,4,8));
+    array_push($iniciales, construirInicio(5,5,3));
+    array_push($iniciales, construirInicio(6,6,0));
+    array_push($iniciales, construirInicio(8,6,1));
+    array_push($iniciales, construirInicio(7,6,6));
+    array_push($iniciales, construirInicio(3,7,0));
+    array_push($iniciales, construirInicio(9,7,2));
+    array_push($iniciales, construirInicio(4,7,3));
+    array_push($iniciales, construirInicio(8,7,7));
+    array_push($iniciales, construirInicio(5,7,8));
+    array_push($iniciales, construirInicio(1,8,0));
+    array_push($iniciales, construirInicio(7,8,4));
+    array_push($iniciales, construirInicio(2,8,6));
+    
+    return $iniciales;
+}
+
+function inicioEasyE(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(7,0,2));
+    array_push($iniciales, construirInicio(3,0,3));
+    array_push($iniciales, construirInicio(1,0,5));
+    array_push($iniciales, construirInicio(5,0,6));
+    array_push($iniciales, construirInicio(8,0,7));
+    array_push($iniciales, construirInicio(8,1,3));
+    array_push($iniciales, construirInicio(9,1,5));
+    array_push($iniciales, construirInicio(4,1,6));
+    array_push($iniciales, construirInicio(3,1,8));
+    array_push($iniciales, construirInicio(5,2,4));
+    array_push($iniciales, construirInicio(6,2,5));
+    array_push($iniciales, construirInicio(1,2,7));
+    array_push($iniciales, construirInicio(5,3,0));
+    array_push($iniciales, construirInicio(6,3,2));
+    array_push($iniciales, construirInicio(8,3,6));
+    array_push($iniciales, construirInicio(2,3,7));
+    array_push($iniciales, construirInicio(1,3,8));
+    array_push($iniciales, construirInicio(3,4,1));
+    array_push($iniciales, construirInicio(9,4,7));
+    array_push($iniciales, construirInicio(1,5,0));
+    array_push($iniciales, construirInicio(2,5,1));
+    array_push($iniciales, construirInicio(4,5,2));
+    array_push($iniciales, construirInicio(3,5,6));
+    array_push($iniciales, construirInicio(7,5,8));
+    array_push($iniciales, construirInicio(7,6,1));
+    array_push($iniciales, construirInicio(1,6,3));
+    array_push($iniciales, construirInicio(6,6,4));
+    array_push($iniciales, construirInicio(6,7,0));
+    array_push($iniciales, construirInicio(2,7,2));
+    array_push($iniciales, construirInicio(9,7,3));
+    array_push($iniciales, construirInicio(7,7,5));
+    array_push($iniciales, construirInicio(5,8,1));
+    array_push($iniciales, construirInicio(1,8,2));
+    array_push($iniciales, construirInicio(4,8,3));
+    array_push($iniciales, construirInicio(3,8,5));
+    array_push($iniciales, construirInicio(9,8,6));
+
+    
+    return $iniciales;
+}
+
+function inicioMediumA(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(9,0,0));
+    array_push($iniciales, construirInicio(2,0,2));
+    array_push($iniciales, construirInicio(5,0,4));
+    array_push($iniciales, construirInicio(1,1,3));
+    array_push($iniciales, construirInicio(8,2,0));
+    array_push($iniciales, construirInicio(1,2,1));
+    array_push($iniciales, construirInicio(3,2,5));
+    array_push($iniciales, construirInicio(5,2,6));
+    array_push($iniciales, construirInicio(2,3,0));
+    array_push($iniciales, construirInicio(4,3,1));
+    array_push($iniciales, construirInicio(3,3,4));
+    array_push($iniciales, construirInicio(7,3,6));
+    array_push($iniciales, construirInicio(5,3,8));
+    array_push($iniciales, construirInicio(5,4,2));
+    array_push($iniciales, construirInicio(9,4,3));
+    array_push($iniciales, construirInicio(4,4,4));
+    array_push($iniciales, construirInicio(1,4,5));
+    array_push($iniciales, construirInicio(3,4,6));
+    array_push($iniciales, construirInicio(3,5,0));
+    array_push($iniciales, construirInicio(9,5,2));
+    array_push($iniciales, construirInicio(7,5,4));
+    array_push($iniciales, construirInicio(4,5,7));
+    array_push($iniciales, construirInicio(1,5,8));
+    array_push($iniciales, construirInicio(3,6,2));
+    array_push($iniciales, construirInicio(2,6,3));
+    array_push($iniciales, construirInicio(1,6,7));
+    array_push($iniciales, construirInicio(8,6,8));
+    array_push($iniciales, construirInicio(9,7,5));
+    array_push($iniciales, construirInicio(8,8,4));
+    array_push($iniciales, construirInicio(6,8,6));
+    array_push($iniciales, construirInicio(7,8,8));
+    
+    return $iniciales;
+}
+/*
+function inicioMediumB(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioMediumC(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioMediumD(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioMediumE(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioHardA(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioHardB(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioHardC(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioHardD(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}
+
+function inicioHardE(){
+    $iniciales = array();
+    array_push($iniciales, construirInicio(,,));
+    
+    return $iniciales;
+}*/
 
 ?>
