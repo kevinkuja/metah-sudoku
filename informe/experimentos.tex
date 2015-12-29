@@ -1,17 +1,23 @@
 \section{Experimentos}
 
-\begin{table}
+En primera instancia realizamos experimentos con ambas metaheurísticas a sudokus de distintos niveles de dificultad [3] y randoms (estos son sudokus solucionados a los que les blanqueamos de manera random 30 casillas). El objetivo es comparar los algoritmos entre sí para ver cuan efectivos son.
+
+
+\begin{table}[ht]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
           & \textbf{Simulated Annealing} & \textbf{Colonia de Hormigas} \\ \hline
-{Escenarios probados} &       115                       &                              \\ \hline
-{Solucionados} &                      70 (60\%)      &                              \\ \hline
-{Dificultad baja} &                     71 \%         &                              \\ \hline
-{Dificultad moderada} &                  40 \%            &                              \\ \hline
-{Dificultad alta} &                         16\%     &                              \\ \hline
+{Escenarios probados} &       115                       &        115                      \\ \hline
+{Total Solucionados} &                      70 (60\%)      &              60 (52\%)               \\ \hline
+{Dificultad baja} &                     71 \%         &              69\%                \\ \hline
+{Dificultad moderada} &                  40 \%            &             25 \%                 \\ \hline
+{Dificultad alta} &                         16\%     &            5 \%                  \\ \hline
+{Random} &                         63\%     &            60 \%                  \\ \hline
 \end{tabular}
 \end{table}
+
+
 
 \subsection{Simulate annealing}
 Para los experimentos elegimos un factor de enfriamiento en 0.5 y una temperatura inicial de 1. La justificación es en base a los experimientos realizados y que mostraremos en esta sección. \\ \\
