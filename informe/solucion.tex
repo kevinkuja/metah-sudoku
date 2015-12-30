@@ -154,3 +154,90 @@ Además se cuenta con un párametro para marcar la cantidad de iteraciones máxi
 \end{algorithmic}
 \end{algorithm}
 
+\subsection{Colonia de Hormigas}
+
+En un principio intentamos resolver este problema con la metaheurística colonia de hormigas. Pero los resultados que obteníamos no eran buenos. Visto esto optamos por hacer algunos cambios en el algoritmo original para ver si podíamos optimizar las soluciones. Efectivamente logramos mejorar, a esta nueva metaheurística la llamamos Hormigas. Por el hecho de que las hormigas no salen en grupo sino individualmente. A continuación explicamos como qued\'o el proceso con nuestros cambios.
+\paragraph{Clase Hormigas}
+\begin{algorithmic}[1]
+\Function{resolver}{Inicio }
+
+\State $feromonas$ $\gets$ new Feromonas()
+\For {1 to 400}
+	\State $sudoku$ = new Sudoku()
+	\State $hormiga$ = new Hormiga(sudoku,feromonas, probaSeguiFeromona)
+	\If{la iteración es multiplo de 6}   
+		\State{ feromonas$\to$evaporar() }
+	\EndIf
+	\If{hormiga$\to$resolver()}   
+		\State{ devolver true }
+	\EndIf
+	
+\EndFor
+
+\State Devolver false
+\EndFunction
+\end{algorithmic}
+\paragraph{Clase Hormiga}
+\begin{algorithmic}[1]
+
+\Function{resolver}{ }
+
+\State casillas = $sudoku$ $\to$ obtenerCasillasSinValor()
+\Comment Obtengo las casillas que aun no tienen valor seteado ordenadas por cantidad de valores posibles a insertar
+\While {casilla = casillas$\to$obtener}
+	\State $seMovio$ = seguirFeromona(casilla)	
+	\If{no seMovio}   
+		\State{ $seMovio$ = elegirRandom() }
+		\If{no seMovio}   
+			\State{ Devolver false }
+			\Comment si no se movio quiere decir que no era posible insertar ningún valor, por lo tanto este camino no tiene soluci\'on
+		\EndIf
+	\EndIf
+	\State casillas = $sudoku$ $\to$ obtenerCasillasSinValor()
+	\Comment Vuelvo a obtener las casillas, porque si inserte un valor cambian los posibles de las muchas casillas
+\EndWhile
+\State{ Devolver true }
+\Comment Si pude insertar valores en todas las que estaban vacias, entonces resolvi el sudoku
+\EndFunction
+\\
+\Function{seguirFeromona}{casilla }
+	\State valoresConFeromonas = feromonas$\to$ obtenerFeromonas(casilla)
+	\Comment obtengo cada valor posible para esa casilla y cuanta feromona hay depositada en cada uno
+	\While {valor = valoresConFeromonas$\to$obtener}
+		\State probaMoverse = random(0,probaSeguiFeromona)
+		\If( (valor$\to$feromona $\ast$ probaMoverse) $\>$ 100)
+			\State moverse(casilla,valor)
+			\State eliminarUltimaFeromonaDepostada() \Comment elimino la ultima feromona depositada porque seguro el ultimo valor insertado era incorrecto
+			\State{ Devolver true }
+		\EndIf
+	\EndWhile
+	\State{ Devolver false }
+\EndFunction
+\\
+\Function{elegirRandom}{casilla }
+	\State posiblesValores$\to$obtenerPosiblesValores()
+	\If{posiblesValores no es vacio}   
+		\State valor = posiblesValores$\to$elegirAlAzar()	
+		\State moverse(casilla,valor)
+		\State{ Devolver true }
+	\EndIf
+	\State{ Devolver false }
+\EndFunction
+\\
+\Function{moverse}{casilla,valo }
+	\State feromonas$\to$depositarFeromona(casilla,valor)
+	\State sudoku$\to$insertarValor(casilla,valor)
+\EndFunction
+\end{algorithmic}
+
+
+Coloquialmente lo que hace este algoritmo es, dado un sudoku incial lanzar 400 hormigas a intentar resolverlo. Cada una recorre las casillas vacias, comenzado por las que menos posibiles valores a insertar tienen (seg\'un las reglas del sudoku antes mencionadas). Para cada casilla se fija si alguno de los valores posibles tienen feromonas depositadas y en base a un calculo probabilistico inserta ese valor o no. Si no, elige uno de los posibles valores al azar y deposita una feromona en el mismo. Depositar una feromona consiste en incrementar en una unidad la probabilidad de que en esa casilla se elija ese valor.
+\\
+\\
+Cada hormiga intenta solucionar el sudoku inicial pero utilizando las feromonas insertadas por sus predecesoras. Cada 6 hormigas, se produce la evapotaci\'on de las feromonas, este proceso consiste en restarle una unidad a cada valor de cada casilla (excepto que el mismo sea 0). Decidimos que sea cada 6 porque probando distintos sudokus vimos que aumentar este n\'umero mejoraba algunas soluciones pero empeoraba otras y lo mismo sucedía la inversa, 6 era el punto intermedio.
+\\
+\\
+Son 400 porque probando varias veces el algoritmo y viendo que numero de hormiga es la que solucionaba el sudoku el mayor numero obtenido fué 350, por lo tanto 400 nos pareció una buena cota que no limite el llegar a la solución y a la vez tampoco aumente el computo innecesariamente.
+\\
+\\
+Por \'ultimo el valor ``probaSeguiFeromona'' utilizado fué 2 porque tambi\'en en base a las pruebas realizadas fue el que mejor equilibrio establec\'ia para llegar a las soluciones en disintos sudokus (entre 1 y 8 variaba su efectividad entre los sudokus, a partir de este valor directamente no llegaba nunca a una soluci\'on)
