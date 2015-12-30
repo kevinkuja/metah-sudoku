@@ -29,3 +29,13 @@ Clarmente se puede observar que a medida que el tablero esta mas lleno el tiempo
 A continuación corrimos el algoritmo con 25 soluciones de diferentes niveles de dificultad, variando el factor de enfriamiento (o alfa):\\
 \includegraphics[scale=0.7]{imgs/porc_soluc.png}	\\
 Si bien con valores intermedios (aprox 0.5) es donde se concentran las mejores soluciones, y que la mayor cantidad se logra con un 0.1, creemos en base a anteriores pruebas que el el factor de enfriamiento debería ser siempre mayor de 0.5 para que sea algo "lento" y no siempre elija ir por soluciones vecinas pero que tampoco las restrinja totalmente. 
+
+\subsection{Hormigas}
+
+Uno de los experimentos que realizamos es el tiempo de computo que demanda este algoritmo para finalizar, mas alla de sí efectivamente logra solucionarlo o no. Como mencionamos anteriormente utilizamos un probabilidad de 2 para el seguimiento de la feromona, en el siguiente experimento veremos el porque de esta eleccion.
+
+\includegraphics[scale=0.5]{imgs/resultados_random_hormigas.png}	\\
+En este caso también podemos observar que a medida que el tablero esta mas lleno el tiempo es mucho menor. A partir de las 35 celdas blanqueadas aproximadamente vemos que el tiempo no es del todo regular, esto es porque hay casos en los que encuentra la solución rapidamente devido a su comportamiento random. Por otro lado los casos en los que no encuentra solución son los que mas demoran porque todas las hormigas intentan encontrarla, a diferencia de cuando se encuentra una solución ya que ahí frena la heurística y no siguen probando las demás hormigas.
+
+
+\includegraphics[scale=0.5]{imgs/solucion_hormigas_proba.png}	
